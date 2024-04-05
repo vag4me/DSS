@@ -9,9 +9,7 @@ import joblib
 
 def train_model():
     trained_model_file = ("C:/Users/user/Desktop/Ionio/DSS/trained_rf_model.pkl")
-    data = pd.read_csv("C:/Users/user/Desktop/Ionio/DSS/Train.csv")
-    
-    data = pd.get_dummies(data)
+    data = pd.read_csv("C:/Users/user/Desktop/Ionio/DSS/Preprocessed_Train.csv")
 
     # Separate features (X) and target variable (y)
     X = data[data.columns[:-1]] 
@@ -28,10 +26,3 @@ def train_model():
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 train_model()
-
-
-
-
-
-
-
