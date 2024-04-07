@@ -131,11 +131,23 @@
         <img src="{{ url_for('static' , filename = 'ministry.png')  }}" height="110px" width="150px" class = "image2">
     </div>
 
+    {% if prediction_text %}
     <div class="prediction">
-        <h4>&#10003;Prediction</h4>
+        <h4>&#10003; Prediction</h4>
         <img src="{{ url_for('static', filename='giphy.gif') }}" alt="Your GIF" width="300" height="200">
         <p>{{ prediction_text }}</p>
     </div>
+    {% endif %}
+    
+    <!-- Error message section -->
+    {% if error_message %}
+    <div class="prediction">
+        <h4>&#10006; Error</h4>
+        <img src="{{ url_for('static', filename='error.gif') }}" alt="Your GIF" width="300" height="200">
+        <p>{{ error_message }}</p>
+    </div>
+    {% endif %}
+ 
     
     <form action="{{ url_for('predict')}}" method="post">
         <div class="form-section">
