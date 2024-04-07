@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form for Predicting Cost Category</title>
+</head>
+<body>
+    <h2>Enter Details for Cost Prediction</h2>
+    <form action="{{ url_for('predict')}}"method="post">
+        <label for="Tour_ID">Tour ID:</label>
+        <input type="text" id="Tour_ID" name="Tour_ID"><br><br>
+        
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country"><br><br>
+        
+        <label for="age_group">Age Group:</label>
+        <input type="text" id="age_group" name="age_group"><br><br>
+        
+        <label for="travel_with">Travel With:</label>
+        <input type="text" id="travel_with" name="travel_with"><br><br>
+        
+        <label for="total_female">Total Female:</label>
+        <input type="number" id="total_female" name="total_female"><br><br>
+        
+        <label for="total_male">Total Male:</label>
+        <input type="number" id="total_male" name="total_male"><br><br>
+        
+        <label for="purpose">Purpose:</label>
+        <input type="text" id="purpose" name="purpose"><br><br>
+        
+        <label for="main_activity">Main Activity:</label>
+        <input type="text" id="main_activity" name="main_activity"><br><br>
+        
+        <label for="info_source">Information Source:</label>
+        <input type="text" id="info_source" name="info_source"><br><br>
+        
+        <label for="tour_arrangement">Tour Arrangement:</label>
+        <input type="text" id="tour_arrangement" name="tour_arrangement"><br><br>
+        
+        <label for="package_transport_int">Package Transport Int:</label>
+        <input type="text" id="package_transport_int" name="package_transport_int"><br><br>
+        
+        <label for="package_accomodation">Package Accomodation:</label>
+        <input type="text" id="package_accomodation" name="package_accomodation"><br><br>
+        
+        <label for="package_food">Package Food:</label>
+        <input type="text" id="package_food" name="package_food"><br><br>
+        
+        <label for="package_transport_tz">Package Transport TZ:</label>
+        <input type="text" id="package_transport_tz" name="package_transport_tz"><br><br>
+        
+        <label for="package_sightseeing">Package Sightseeing:</label>
+        <input type="text" id="package_sightseeing" name="package_sightseeing"><br><br>
+        
+        <label for="package_guided_tour">Package Guided Tour:</label>
+        <input type="text" id="package_guided_tour" name="package_guided_tour"><br><br>
+        
+        <label for="package_insurance">Package Insurance:</label>
+        <input type="text" id="package_insurance" name="package_insurance"><br><br>
+        
+        <label for="night_mainland">Night Mainland:</label>
+        <input type="number" id="night_mainland" name="night_mainland"><br><br>
+        
+        <label for="night_zanzibar">Night Zanzibar:</label>
+        <input type="number" id="night_zanzibar" name="night_zanzibar"><br><br>
+        
+        <label for="first_trip_tz">First Trip TZ:</label>
+        <input type="text" id="first_trip_tz" name="first_trip_tz"><br><br>
+        
+        <input type="submit" class="btn btn-primary btn-block btn-large" value="Submit">
+    </form>
+
+   <br>
+   <br>
+   <h4 style="color:Violet;">
+   {{ prediction_text }} </h4>
+</body>
+</html>
