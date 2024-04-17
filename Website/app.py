@@ -6,37 +6,42 @@ import joblib
 
 
 app = Flask(__name__)
-pipeline = joblib.load('Trained_pipeline.pkl')
+pipeline = joblib.load('models/Trained_pipeline.pkl')
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route('/predict' , methods = ['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
-    # Get form data and convert values to the correct data type
+    # Get form data
+    form_data = request.form
+    
+    # Convert form data to the correct data types
     data = {
-        'Tour_ID': [request.form['Tour_ID']],
-        'country': [request.form['country']]if request.form['country'] else None,
-        'age_group': [request.form['age_group']]if request.form['age_group'] else None,
-        'travel_with': [request.form['travel_with']]if request.form['travel_with'] else None,
-        'total_female': [float(request.form['total_female'])]if request.form['total_female'] else None,
-        'total_male': [float(request.form['total_male'])]if request.form['total_male'] else None,
-        'purpose': [request.form['purpose']]if request.form['purpose'] else None,
-        'main_activity': [request.form['main_activity']] if request.form['main_activity'] else None,
-        'info_source': [request.form['info_source']] if request.form['info_source'] else None,
-        'tour_arrangement': [request.form['tour_arrangement']]if request.form['tour_arrangement'] else None,
-        'package_transport_int': [request.form['package_transport_int']]if request.form['package_transport_int'] else None,
-        'package_accomodation': [request.form['package_accomodation']]if request.form['package_accomodation'] else None,
-        'package_food': [request.form['package_food']]if request.form['package_food'] else None,
-        'package_transport_tz': [request.form['package_transport_tz']]if request.form['package_transport_tz'] else None,
-        'package_sightseeing': [request.form['package_sightseeing']]if request.form['package_sightseeing'] else None,
-        'package_guided_tour': [request.form['package_guided_tour']]if request.form['package_guided_tour'] else None,
-        'package_insurance': [request.form['package_insurance']]if request.form['package_insurance'] else None,
-        'night_mainland': [int(request.form['night_mainland'])] if request.form['night_mainland'] else None,
-        'night_zanzibar': [int(request.form['night_zanzibar'])] if request.form['night_zanzibar'] else None,
-        'first_trip_tz': [request.form['first_trip_tz']]if request.form['first_trip_tz'] else None
+        'age_group': [form_data['age_group']] if form_data['age_group'] else None,
+        'travel_with': [form_data['travel_with']] if form_data['travel_with'] else None,
+        'total_female': [float(form_data['total_female'])] if form_data['total_female'] else None,
+        'total_male': [float(form_data['total_male'])] if form_data['total_male'] else None,
+        'purpose': [form_data['purpose']] if form_data['purpose'] else None,
+        'main_activity': [form_data['main_activity']] if form_data['main_activity'] else None,
+        'info_source': [form_data['info_source']] if form_data['info_source'] else None,
+        'tour_arrangement': [form_data['tour_arrangement']] if form_data['tour_arrangement'] else None,
+        'package_transport_int': [form_data['package_transport_int']] if form_data['package_transport_int'] else None,
+        'package_accomodation': [form_data['package_accomodation']] if form_data['package_accomodation'] else None,
+        'package_food': [form_data['package_food']] if form_data['package_food'] else None,
+        'package_transport_tz': [form_data['package_transport_tz']] if form_data['package_transport_tz'] else None,
+        'package_sightseeing': [form_data['package_sightseeing']] if form_data['package_sightseeing'] else None,
+        'package_guided_tour': [form_data['package_guided_tour']] if form_data['package_guided_tour'] else None,
+        'package_insurance': [form_data['package_insurance']] if form_data['package_insurance'] else None,
+        'night_mainland': [int(form_data['night_mainland'])] if form_data['night_mainland'] else None,
+        'night_zanzibar': [int(form_data['night_zanzibar'])] if form_data['night_zanzibar'] else None,
+        'first_trip_tz': [form_data['first_trip_tz']] if form_data['first_trip_tz'] else None
     }
+
+    # Check if all form fields are empty
+    if all(value is None for value in data.values()):
+        return render_template('index.html', error_message='You have to fill all the data')
 
     dataframe = pd.DataFrame(data)
     missing = dataframe.isnull().sum()
@@ -55,4 +60,4 @@ if __name__ == "__main__":
     app.debug = True
     app.run()
             
-            
+        
