@@ -17,8 +17,6 @@ def relative_to_assets(path: str) -> Path:
 def collect_data():
     # Define the data dictionary
     data = {
-        'Tour_ID': ['tour_idynufedne'],
-        'country': ['KOREA'],
         'age_group': ['25-44'],
         'travel_with': ['Alone'],
         'total_female': [0.0],
@@ -40,8 +38,6 @@ def collect_data():
     }
 
     # Collect data from Entry widgets and update the data dictionary
-    data['Tour_ID'] = [entry_3.get()]
-    data['country'] = [entry_5.get()]
     data['age_group'] = [entry_2.get()]
     data['travel_with'] = [entry_1.get()]
     data['total_female'] = [float(entry_18.get())]  # Convert to float
@@ -123,13 +119,7 @@ image_2 = canvas.create_image(
     image=image_image_2
 )
 
-image_image_3 = PhotoImage(
-    file=relative_to_assets("image_3.png"))
-image_3 = canvas.create_image(
-    129.0,
-    655.0,
-    image=image_image_3
-)
+
 
 image_image_4 = PhotoImage(
     file=relative_to_assets("image_4.png"))
@@ -179,25 +169,6 @@ entry_2.place(
     height=27.0
 )
 
-entry_image_3 = PhotoImage(
-    file=relative_to_assets("entry_3.png"))
-entry_bg_3 = canvas.create_image(
-    434.5,
-    50.5,
-    image=entry_image_3
-)
-entry_3 = Entry(
-    bd=0,
-    bg="#FCFBFB",
-    fg="#000716",
-    highlightthickness=0
-)
-entry_3.place(
-    x=323.0,
-    y=36.0,
-    width=223.0,
-    height=27.0
-)
 
 entry_image_4 = PhotoImage(
     file=relative_to_assets("entry_4.png"))
@@ -219,25 +190,7 @@ entry_4.place(
     height=27.0
 )
 
-entry_image_5 = PhotoImage(
-    file=relative_to_assets("entry_5.png"))
-entry_bg_5 = canvas.create_image(
-    432.5,
-    133.5,
-    image=entry_image_5
-)
-entry_5 = Entry(
-    bd=0,
-    bg="#FCFBFB",
-    fg="#000716",
-    highlightthickness=0
-)
-entry_5.place(
-    x=321.0,
-    y=119.0,
-    width=223.0,
-    height=27.0
-)
+
 
 entry_image_6 = PhotoImage(
     file=relative_to_assets("entry_6.png"))
@@ -548,23 +501,7 @@ canvas.create_text(
     font=("Inter", 20 * -1)
 )
 
-canvas.create_text(
-    321.0,
-    6.0,
-    anchor="nw",
-    text="Tour Id",
-    fill="#D4AF37",
-    font=("Inter", 24 * -1)
-)
 
-canvas.create_text(
-    320.0,
-    88.0,
-    anchor="nw",
-    text="Country",
-    fill="#D4AF37",
-    font=("Inter", 24 * -1)
-)
 
 canvas.create_text(
     320.0,
