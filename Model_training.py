@@ -2,18 +2,19 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+import pickle
+from sklearn.metrics import accuracy_score, confusion_matrix
 
-def train_model(csv_file):
-    # Load the preprocessed data
-    df = pd.read_csv(csv_file)
+def train_and_save_model(train_csv_file, model_file):
+    # Load the preprocessed training data
+    train_df = pd.read_csv(train_csv_file)
     
-    # Drop the 'Tour_ID' and 'country' columns
-    df = df.drop(columns=['Tour_ID', 'country'])
+    # Drop unnecessary columns
+    train_df.drop(columns=['Tour_ID', 'country'], inplace=True)
     
     # Separate features and target variable
-    X = df.drop(columns=["cost_category"])
-    y = df["cost_category"]
+    X = train_df.drop(columns=["cost_category"])
+    y = train_df["cost_category"]
     
     # Encode categorical features
     label_encoders = {}
@@ -31,17 +32,34 @@ def train_model(csv_file):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # Train a RandomForestClassifier model
-    model = RandomForestClassifier(random_state=42)
+    model = RandomForestClassifier(n_estimators=10, random_state=42)
     model.fit(X_train, y_train)
     
-    # Make predictions on the test set
+    # Save the trained model and label encoders
+    with open(model_file, 'wb') as file:
+        pickle.dump((model, label_encoders), file)
+    
+    return X_test, y_test, model
+
+def evaluate_model(X_test, y_test, model):
+    # Make predictions
     y_pred = model.predict(X_test)
     
-    # Evaluate the model
+    # Calculate accuracy
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Model accuracy: {accuracy:.2f}')
     
-    return model
+    # Calculate confusion matrix
+    cm = confusion_matrix(y_test, y_pred)
+    print('Confusion Matrix:')
+    print(cm)
 
-# Run the training function
-model = train_model('C:/Users/user/Desktop/Ionio/DSS/Preprocessed_Train.csv')
+# File paths
+train_csv_file = 'C:/Users/user/Desktop/Ionio/DSS/Preprocessed_Train.csv'
+model_file = 'random_forest_model.pkl'
+
+# Train the model and save it
+X_test, y_test, model = train_and_save_model(train_csv_file, model_file)
+
+# Evaluate the model
+evaluate_model(X_test, y_test, model)
