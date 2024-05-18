@@ -6,7 +6,8 @@ import joblib
 
 
 app = Flask(__name__)
-pipeline = joblib.load('models/Trained_pipeline.pkl')
+pipeline = joblib.load('models/random_forest_model.pkl')
+
 
 @app.route('/')
 def home():
@@ -60,4 +61,3 @@ if __name__ == "__main__":
     app.debug = True
     app.run()
             
-        
