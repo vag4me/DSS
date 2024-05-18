@@ -27,7 +27,7 @@ def train_model(train_csv_file, model_file):
     # Define preprocessing steps
     preprocessor = ColumnTransformer(
         transformers=[
-            ('onehot', OneHotEncoder(), categorical_features)
+            ('onehot', OneHotEncoder(handle_unknown = 'ignore'), categorical_features)
         ])
     
     # Define the pipeline with preprocessing and model
