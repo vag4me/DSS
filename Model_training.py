@@ -1,54 +1,47 @@
 import pandas as pd
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix
-import joblib
+from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
-# Define the preprocessing steps
-preprocessor = Pipeline([
-    ('imputer', SimpleImputer(strategy='most_frequent')),  # Handle missing values using the most frequent value
-    ('onehot', OneHotEncoder(handle_unknown='ignore'))    # Perform one-hot encoding
-])
+def train_model(csv_file):
+    # Load the preprocessed data
+    df = pd.read_csv(csv_file)
+    
+    # Drop the 'Tour_ID' and 'country' columns
+    df = df.drop(columns=['Tour_ID', 'country'])
+    
+    # Separate features and target variable
+    X = df.drop(columns=["cost_category"])
+    y = df["cost_category"]
+    
+    # Encode categorical features
+    label_encoders = {}
+    for column in X.select_dtypes(include=['object']).columns:
+        le = LabelEncoder()
+        X[column] = le.fit_transform(X[column])
+        label_encoders[column] = le
+    
+    # Encode the target variable if it is categorical
+    if y.dtype == 'object':
+        le = LabelEncoder()
+        y = le.fit_transform(y)
+    
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    # Train a RandomForestClassifier model
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X_train, y_train)
+    
+    # Make predictions on the test set
+    y_pred = model.predict(X_test)
+    
+    # Evaluate the model
+    accuracy = accuracy_score(y_test, y_pred)
+    print(f'Model accuracy: {accuracy:.2f}')
+    
+    return model
 
-# Define the model
-model = RandomForestClassifier(n_estimators=10, random_state=42)
-
-# Combine preprocessing and modeling into a single pipeline
-pipeline = Pipeline([
-    ('preprocessor', preprocessor),
-    ('model', model)
-])
-
-# Load the data
-train_data = pd.read_csv("Train.csv")
-
-# Drop unnecessary columns
-train_data = train_data.drop(columns=['Tour_ID', 'country'])
-
-# Separate features and target variable
-X = train_data.drop(columns=["cost_category"])
-y = train_data["cost_category"]
-
-# Split the data into training and validation sets
-X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Train the pipeline (including preprocessing and modeling) on the training data
-pipeline.fit(X_train, y_train)
-
-# Make predictions on the validation set
-y_pred_val = pipeline.predict(X_val)
-
-# Calculate accuracy on the validation set
-accuracy_val = accuracy_score(y_val, y_pred_val)
-print("Validation Accuracy:", accuracy_val)
-
-# Generate confusion matrix on the validation set
-conf_matrix_val = confusion_matrix(y_val, y_pred_val)
-print("Confusion Matrix (Validation):")
-print(conf_matrix_val)
-
-# Save the trained pipeline
-joblib.dump(pipeline, 'Trained_pipeline.pkl')
+# Run the training function
+model = train_model('C:/Users/user/Desktop/Ionio/DSS/Preprocessed_Train.csv')
