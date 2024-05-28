@@ -3,7 +3,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 from sklearn.model_selection import train_test_split
 import joblib
 
@@ -33,7 +33,7 @@ def train_model(train_csv_file, model_file):
     # Define the pipeline with preprocessing and model
     pipeline = Pipeline([
         ('preprocessor', preprocessor),
-        ('model', RandomForestClassifier(n_estimators=10, random_state=42))
+        ('model', RandomForestClassifier(n_estimators=100, random_state=42))
     ])
     
     # Train the model
@@ -58,18 +58,11 @@ def evaluate_model(X_test, y_test, model):
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Accuracy: {accuracy}')
     
-    # Calculate TP, TN, FP, FN
-    TP = cm[1, 1]
-    TN = cm[0, 0]
-    FP = cm[0, 1]
-    FN = cm[1, 0]
+    # Generate a classification report
+    report = classification_report(y_test, y_pred)
+    print('Classification Report:')
+    print(report)
     
-    # Print TP, TN, FP, FN
-    print(f'True Positives (TP): {TP}')
-    print(f'True Negatives (TN): {TN}')
-    print(f'False Positives (FP): {FP}')
-    print(f'False Negatives (FN): {FN}')
-
 def predict(model_file, new_data_file):
     # Load the saved model
     model = joblib.load(model_file)
